@@ -1,3 +1,7 @@
+import 'package:cubit_authgoogle/pages/home_page.dart';
+import 'package:cubit_authgoogle/pages/signin_page.dart';
+import 'package:cubit_authgoogle/pages/signup_page.dart';
+import 'package:cubit_authgoogle/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,12 +19,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Firebase Auth',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: SpalshPage(),
+      routes: {
+        SignUpPage.routeName : (context) => SignUpPage(),
+        SigninPage.routeName : (context) => SigninPage(),
+        HomePage.routeName : (context) => HomePage(),
+      },
     );
   }
 }
