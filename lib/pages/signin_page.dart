@@ -1,9 +1,10 @@
-
 import 'package:cubit_authgoogle/blocs/signin/signin_cubit.dart';
 import 'package:cubit_authgoogle/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../utils/error_dialog.dart';
 
 class SigninPage extends StatefulWidget {
   static const String routeName = '/signin';
@@ -36,111 +37,117 @@ class _SigninPageState extends State<SigninPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
-      child: Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Form(
-                  key: _formKey,
-                  autovalidateMode: _autovalidateMode,
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Image.asset(
-                        'assets/images/flutter_logo.png',
-                        width: 250,
-                        height: 250,
-                      ),
-                      SizedBox(height: 20.0),
-                      TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email),
-                        ),
-                        validator: (String? value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Email required';
-                          }
-                          // if (!isEmail(value.trim())) {
-                          //   return 'Enter a valid email';
-                          // }
-                          return null;
-                        },
-                        onSaved: (String? value) {
-                          _email = value;
-                        },
-                      ),
-                      SizedBox(height: 20.0),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
-                        ),
-                        validator: (String? value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Password required';
-                          }
-                          if (value.trim().length < 6) {
-                            return 'Password must be at least 6 characters long';
-                          }
-                          return null;
-                        },
-                        onSaved: (String? value) {
-                          _password = value;
-                        },
-                      ),
-                      SizedBox(height: 20.0),
-                      ElevatedButton(
-                        onPressed: _submit,
-                            // state.signinStatus == SigninStatus.submitting
-                            //     ? null
-                            //     : _submit,
-                        child: Text('Login In'),
-                            // state.signinStatus == SigninStatus.submitting
-                            //     ? 'Loading...'
-                            //     : 'Sign In'),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: BlocConsumer<SigninCubit, SigninState>(
+          listener: (context, state) {
+           errorDialog(context, state.customError);
+          },
+          builder: (context, state) {
+            return Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: _autovalidateMode,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Image.asset(
+                            'assets/images/flutter_logo.png',
+                            width: 250,
+                            height: 250,
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      TextButton(
-                        onPressed:(){
-                            // state.signinStatus == SigninStatus.submitting
-                            //     ? null
-                            //     : () {
-                                    Navigator.pushNamed(
-                                        context, SignUpPage.routeName);
-                                  },
-                        child: Text('Not a member? Sign Up!'),
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(
-                            fontSize: 20.0,
-                            decoration: TextDecoration.underline,
+                          SizedBox(height: 20.0),
+                          TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            autocorrect: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              labelText: 'Email',
+                              prefixIcon: Icon(Icons.email),
+                            ),
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Email required';
+                              }
+                              // if (!isEmail(value.trim())) {
+                              //   return 'Enter a valid email';
+                              // }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              _email = value;
+                            },
                           ),
-                        ),
+                          SizedBox(height: 20.0),
+                          TextFormField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              labelText: 'Password',
+                              prefixIcon: Icon(Icons.lock),
+                            ),
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Password required';
+                              }
+                              if (value.trim().length < 6) {
+                                return 'Password must be at least 6 characters long';
+                              }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              _password = value;
+                            },
+                          ),
+                          SizedBox(height: 20.0),
+                          ElevatedButton(
+                            onPressed: state.signinStatus == SigninStatus.submitting ? null : _submit, 
+                            child: Text(
+                                state.signinStatus == SigninStatus.submitting
+                                    ? 'Loading...'
+                                    : 'Sign In'),
+                            style: ElevatedButton.styleFrom(
+                              textStyle: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+                          TextButton(
+                            onPressed: 
+                              state.signinStatus == SigninStatus.submitting
+                                  ? null
+                                  : () {
+                              Navigator.pushNamed(context, SignUpPage.routeName);
+                            },
+                            child: Text('Not a member? Sign Up!'),
+                            style: TextButton.styleFrom(
+                              textStyle: TextStyle(
+                                fontSize: 20.0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                )
+            );
+          },
+        ),
+        ),
     );
-
+    
   }
 }
