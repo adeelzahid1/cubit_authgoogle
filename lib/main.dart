@@ -1,9 +1,13 @@
-
-import 'package:cubit_authgoogle/cubit/counter_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -16,8 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BlocProvider(
-          create: (context) => CounterCubit(55), child: MyHomePage()),
+      home: MyHomePage(),
     );
   }
 }
@@ -36,17 +39,7 @@ class MyHomePage extends StatelessWidget {
             Text(
               'You have pushed the button this many times:',
             ),
-            BlocBuilder<CounterCubit, CounterState>(builder: (context, state) {
-              if (state is CounterInitial) {
-                return buildValue(state.value, context);
-              } else if (state is CounterIncrement) {
-                return buildValue(state.value, context);
-              }
-              else if (state is CounterDecrement){
-                return buildValue(state.value, context);
-              }
-              throw UnimplementedError();
-            }),
+           
           ],
         ),
       ),
@@ -55,8 +48,7 @@ class MyHomePage extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {
-              final counterCubit = BlocProvider.of<CounterCubit>(context);
-              counterCubit.incrementValue();
+              
             },
             tooltip: 'Increment',
             child: Icon(Icons.add),
@@ -64,8 +56,7 @@ class MyHomePage extends StatelessWidget {
           SizedBox(width: 10),
           FloatingActionButton(
             onPressed: () {
-              final counterCubit = BlocProvider.of<CounterCubit>(context);
-              counterCubit.decrementValue();
+              
             },
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
