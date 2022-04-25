@@ -14,7 +14,16 @@ class SpalshPage extends StatelessWidget {
       listener: (context, state) {
         print('Listner $state');
         if(state.authStatus == AuthStatus.unauthencated){
-          Navigator.pushNamed(context, SigninPage.routeName);
+          // Navigator.pushNamed(context, SigninPage.routeName);
+            Navigator.pushNamedAndRemoveUntil(context, SigninPage.routeName,
+             (route){
+               print('Route Setting name : ${route.settings.name}');
+               print('Modal Route : ${ModalRoute.of(context)!.settings.name}');
+               return route.settings.name == ModalRoute.of(context)!.settings.name ? true : false;
+             });
+
+
+
         }
         else if(state.authStatus == AuthStatus.authenticated){
           Navigator.pushNamed(context, HomePage.routeName);

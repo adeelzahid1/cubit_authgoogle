@@ -66,6 +66,7 @@ class _SigninPageState extends State<SigninPage> {
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
+                            initialValue: 'user01@gmail.com',
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               filled: true,
@@ -88,6 +89,7 @@ class _SigninPageState extends State<SigninPage> {
                           SizedBox(height: 20.0),
                           TextFormField(
                             obscureText: true,
+                            initialValue: '11223344',
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               filled: true,

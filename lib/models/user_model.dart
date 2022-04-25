@@ -6,14 +6,14 @@ import 'package:equatable/equatable.dart';
 class User extends Equatable {
   final String id;
   final String name;
-  final String emil;
+  final String email;
   final String profileImage;
   final int points;
   final String rank;
   User({
     required this.id,
     required this.name,
-    required this.emil,
+    required this.email,
     required this.profileImage,
     required this.points,
     required this.rank,
@@ -26,7 +26,7 @@ class User extends Equatable {
     return User(
       id: userDoc.id,
        name: userData!['name'],
-        emil: userData['emil'],
+        email: userData['email'],
          profileImage: userData['profileImage'],
           points: userData['points'],
            rank: userData['rank'],
@@ -37,7 +37,7 @@ class User extends Equatable {
     return User(
       id: '',
        name: '',
-        emil: '',
+        email: '',
          profileImage: '',
           points: -1,
            rank: '',
@@ -50,7 +50,7 @@ class User extends Equatable {
     return [
       id,
       name,
-      emil,
+      email,
       profileImage,
       points,
       rank,
@@ -60,7 +60,7 @@ class User extends Equatable {
   User copyWith({
     String? id,
     String? name,
-    String? emil,
+    String? email,
     String? profileImage,
     int? points,
     String? rank,
@@ -68,7 +68,7 @@ class User extends Equatable {
     return User(
       id: id ?? this.id,
       name: name ?? this.name,
-      emil: emil ?? this.emil,
+      email: email ?? this.email,
       profileImage: profileImage ?? this.profileImage,
       points: points ?? this.points,
       rank: rank ?? this.rank,
@@ -77,7 +77,7 @@ class User extends Equatable {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, emil: $emil, profileImage: $profileImage, points: $points, rank: $rank)';
+    return 'User(id: $id, name: $name, email: $email, profileImage: $profileImage, points: $points, rank: $rank)';
   }
 
   Map<String, dynamic> toMap() {
@@ -85,7 +85,7 @@ class User extends Equatable {
   
     result.addAll({'id': id});
     result.addAll({'name': name});
-    result.addAll({'emil': emil});
+    result.addAll({'email': email});
     result.addAll({'profileImage': profileImage});
     result.addAll({'points': points});
     result.addAll({'rank': rank});
@@ -97,7 +97,7 @@ class User extends Equatable {
     return User(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
-      emil: map['emil'] ?? '',
+      email: map['email'] ?? '',
       profileImage: map['profileImage'] ?? '',
       points: map['points']?.toInt() ?? 0,
       rank: map['rank'] ?? '',
